@@ -1,0 +1,43 @@
+import numpy
+from matplotlib import pyplot
+%matplotlib inline
+T = 50.0
+dt = 0.1
+N = int(T/dt) + 1
+t = numpy.arange(0.0,T+dt,dt)
+h0 = 0.0
+v0 = 0.0
+g = 9.81
+m_dot_p = 20.0
+m_p_nol = 100.0
+v_e = 325.0
+rho = 1.091
+r = 0.5
+A = (22/7)*(r**2)
+C_D = 0.15
+m_s = 50.0
+acceleration = 0.0
+h = numpy.zeros(N)
+h[0] = h0
+output = numpy.array([t[0],h0,v0,m_p_nol,acceleration])
+
+for n in range(1,N):
+    
+    print(output)
+
+    kec_1 = output[2]
+    
+    if n < 51:
+        m_p = m_p_nol - 20.0 * t[n-1]
+        komponent_v = - g + (m_dot_p * v_e - 0.5 * rho * output[2] * abs(output[2]) * A * C_D) / (m_s + m_p)
+    else:
+        m_p = 0
+        komponent_v = - g + (- 0.5 * rho * output[2] * abs(output[2]) * A * C_D) / (m_s)
+    
+    v = output[2] + dt*komponent_v
+    
+    acceleration = (v - output[2]) / dt  # acceleration = komponent_v
+    
+    output = output + numpy.array([dt, dt*output[2], - output[2] + v, - output[3] + m_p, - output[4] + acceleration])
+    
+    h[n] = output[1]
