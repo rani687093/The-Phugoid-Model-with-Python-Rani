@@ -1,5 +1,4 @@
 import numpy
-from matplotlib import pyplot
 %matplotlib inline
 T = 50.0
 dt = 0.1
